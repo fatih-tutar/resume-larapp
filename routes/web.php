@@ -19,3 +19,5 @@ Route::get('/resume', [FrontController::class, 'resume'])->name('resume');
 Route::get('/portfolio', [FrontController::class, 'portfolio'])->name('portfolio');
 Route::get('/blog', [FrontController::class, 'blog'])->name('blog');
 Route::get('/contact', [FrontController::class, 'contact'])->name('contact');
+
+Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
