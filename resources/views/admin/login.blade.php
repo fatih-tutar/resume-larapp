@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Corona Admin</title>
+    <title>Admin Panel</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
@@ -16,6 +16,7 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <!-- End layout styles -->
+    <link rel="stylesheet" href="{{ asset('assets/sweet-alert/sweetalert2.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
   </head>
   <body>
@@ -26,14 +27,15 @@
             <div class="card col-lg-4 mx-auto">
               <div class="card-body px-5 py-5">
                 <h3 class="card-title text-left mb-3">Login</h3>
-                <form>
+                <form action="" method="POST" id="loginForm">
+                  @csrf
                   <div class="form-group">
-                    <label>Username or email *</label>
-                    <input type="text" class="form-control p_input">
+                    <label for="email">Username or email *</label>
+                    <input type="email" class="form-control p_input" name="email" id="email" value="{{ old('email') }}">
                   </div>
                   <div class="form-group">
-                    <label>Password *</label>
-                    <input type="text" class="form-control p_input">
+                    <label for="password">Password *</label>
+                    <input type="password" class="form-control p_input" id="password" name="password">
                   </div>
                   <div class="form-group d-flex align-items-center justify-content-between">
                     <div class="form-check">
@@ -43,15 +45,8 @@
                     <a href="#" class="forgot-pass">Forgot password</a>
                   </div>
                   <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-block enter-btn">Login</button>
+                    <button type="button" class="btn btn-primary btn-block enter-btn" style="width:100%;" id="btnLogin">Login</button>
                   </div>
-                  <div class="d-flex">
-                    <button class="btn btn-facebook me-2 col">
-                      <i class="mdi mdi-facebook"></i> Facebook </button>
-                    <button class="btn btn-google col">
-                      <i class="mdi mdi-google-plus"></i> Google plus </button>
-                  </div>
-                  <p class="sign-up">Don't have an Account?<a href="#"> Sign Up</a></p>
                 </form>
               </div>
             </div>
@@ -74,6 +69,44 @@
     <script src="{{ asset('assets/js/misc.js') }}"></script>
     <script src="{{ asset('assets/js/settings.js') }}"></script>
     <script src="{{ asset('assets/js/todolist.js') }}"></script>
+    <script src="{{ asset('assets/sweet-alert/sweetalert2.all.min.js') }}"></script>
+    <script>
+      $('#btnLogin').click(function (){
+        let email = document.querySelector('#email').value;
+        let password = document.querySelector('#password').value;
+        if(email.trim() == ''){
+          Swal.fire({
+            icon: 'info',
+            title: 'Warning!',
+            text: 'Email address is empty!',
+            footer: '<a href="">Why do I have this issue?</a>',
+            confirmButtonText: 'Okay'
+          })
+        }else if(!emailControl(email)){
+          Swal.fire({
+            icon: 'info',
+            title: 'Warning!',
+            text: 'Invalid email address!',
+            footer: '<a href="">Why do I have this issue?</a>',
+            confirmButtonText: 'Okay'
+          })
+        }else if(password.trim() == ''){
+          Swal.fire({
+            icon: 'info',
+            title: 'Warning!',
+            text: 'Password is empty!',
+            footer: '<a href="">Why do I have this issue?</a>',
+            confirmButtonText: 'Okay'
+          })
+        }else{
+          $('#loginForm').submit();
+        }
+      }); 
+      function emailControl(email){
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+      }
+    </script>
     <!-- endinject -->
   </body>
 </html>
